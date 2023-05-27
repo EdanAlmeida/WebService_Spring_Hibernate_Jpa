@@ -9,14 +9,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "tb_product")
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -24,15 +26,21 @@ public class Product implements Serializable {
 	private String description;
 	private Double price;
 	private String imgUrl;
-	
-	/*O Set é uma interface e não pode ser instanciado, por isso usa-se a Classe correspondente a interface*/
-	@Transient
+
+	/*
+	 * O Set é uma interface e não pode ser instanciado, por isso usa-se a Classe
+	 * correspondente a interface
+	 */
+	@ManyToMany
+	@JoinTable(name = "tb_product_category", 
+	joinColumns = @JoinColumn(name = "product_id"), 
+	inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
-	
+
 	public Product() {
 	}
 
-	/*A coleção de categories não entra no construtor pq já foi instanciada*/
+	/* A coleção de categories não entra no construtor pq já foi instanciada */
 	public Product(Long id, String name, String description, Double price, String imgUrl) {
 		super();
 		this.id = id;
