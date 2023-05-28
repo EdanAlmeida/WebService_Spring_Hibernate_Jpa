@@ -100,6 +100,15 @@ public class Order implements Serializable {
 	public Set<OrderItem> getItems() {
 		return items;
 	}
+	
+	/*o nome usa o padrão do JavaEE com o get na assinatura do método*/
+	public Double getTotal() {
+		double sum = 0.0;
+		for (OrderItem x : items) {
+			sum += x.getSubTotal();
+		}
+		return sum;
+	}
 
 	@Override
 	public int hashCode() {
