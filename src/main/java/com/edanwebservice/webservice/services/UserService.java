@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.edanwebservice.webservice.entities.User;
 import com.edanwebservice.webservice.repositories.UserRepository;
+import com.edanwebservice.webservice.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -21,7 +22,7 @@ public class UserService {
 	
 	public User findById(Long id) {
 		Optional<User> user = userRepository.findById(id);
-		return user.get();
+		return user.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public User insertUser(User user) {
